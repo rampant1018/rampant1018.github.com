@@ -46,3 +46,14 @@ tags: []
 * Exec=application - 從shell執行應用程式的指令，可以包含arguments
 * Icon=application.png - 應用程式的圖示名稱
 * Terminal=false - 是否要使用終端機開啟
+
+## Icons
+在剛剛的Sample中設定了一個`Icon=application.png`，接著就要將icon放到正確位置讓他正常運作，desktop會從選定的佈景資料夾(*/usr/share/icons*)中尋找icon，最少要有一份解析度為48*48的圖片，如果desktop在選定的佈景資料夾中找不到icon，他會到*/usr/share/icons/hicolor*中尋找。
+
+新增好圖片後要重新產生icon的快取```$ gtk-update-icon-cache 'path of theme'```
+
+假設我現在是用GNOME預設的佈景主題，則我要做：
+
+1. 將icon放到*/usr/share/icons/gnome/48\*48/apps*
+2. ```$ gtk-update-icon-cache /usr/share/icons/gnome```
+3. 重新啟動Launcher
