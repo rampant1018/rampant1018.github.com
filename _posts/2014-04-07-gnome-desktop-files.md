@@ -3,7 +3,7 @@ layout: post
 title: "GNOME: Desktop files"
 description: "添加捷徑至GNOME啟動器"
 category: 
-tags: []
+tags: [Ubuntu]
 ---
 {% include JB/setup %}
 
