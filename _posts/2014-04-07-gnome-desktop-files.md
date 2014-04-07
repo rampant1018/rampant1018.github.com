@@ -48,7 +48,7 @@ tags: []
 * Terminal=false - 是否要使用終端機開啟
 
 ## Icons
-在剛剛的Sample中設定了一個`Icon=application.png`，接著就要將icon放到正確位置讓他正常運作，desktop會從選定的佈景資料夾(*/usr/share/icons*)中尋找icon，最少要有一份解析度為48*48的圖片，如果desktop在選定的佈景資料夾中找不到icon，他會到*/usr/share/icons/hicolor*中尋找。
+在剛剛的Sample中設定了一個`Icon=application.png`，接著就要將icon放到正確位置讓他正常運作，desktop會從選定的佈景資料夾(*/usr/share/icons*)中尋找icon，最少要有一份解析度為48\*48的圖片，如果desktop在選定的佈景資料夾中找不到icon，他會到*/usr/share/icons/hicolor*中尋找。
 
 新增好圖片後要重新產生icon的快取```$ gtk-update-icon-cache 'path of theme'```
 
