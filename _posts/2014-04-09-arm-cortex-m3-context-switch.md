@@ -6,8 +6,6 @@ category: Embedded
 tags: [ASM, C, OS]
 ---
 {% include JB/setup %}
-
-#ARM Cortex-M3 #
 ### Execution Modes ###
 Cortex-M3執行分成兩種模式：Thread mode、Handler mode
 
