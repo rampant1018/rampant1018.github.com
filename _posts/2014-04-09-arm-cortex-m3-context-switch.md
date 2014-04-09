@@ -48,4 +48,4 @@ Cortex-M3支援兩個不同的堆疊：Main Stack、Process Stack，R13在同一
 15. 結束write
 
 下圖是以`sbrk`為範例呼叫
-![System call sbrk](https://farm8.staticflickr.com/7101/13734597853_f0a70eb985_o.jpg)
+![System call sbrk](https://farm8.staticflickr.com/7101/13734597853_dcb0d76aa7_c.jpg)
