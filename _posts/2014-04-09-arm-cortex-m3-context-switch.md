@@ -35,17 +35,17 @@ Cortex-M3支援兩個不同的堆疊：Main Stack、Process Stack，R13在同一
 2. 將r8堆進stack
 3. 將0x3寫入r8(syscall number)
 4. 呼叫svc，產生exception，由SVC_Handler處理，產生exception時會將依序將xPSR、PC、LR、R12、R3、R2、R1、R0堆入stack
-    SVC_Handler()
-    1. 將user state堆入process stack中
-    2. 從main stack中取出kernel state
-    3. branch到lr，此處的lr是call activate進入activate後存的function return address，所以會branch回到call activate的下一句指令
-5. kernel中處理syscall經過迴圈後call activate
-    activate()
-    1. 將kernel state存入main stack
-    2. 將r0寫進psp，並切換至process stack(CONTROL)
-    3. 從process stack中將user state取出
-    4. branch到lr，此處的lr是call svc進入svc_handler後存的function return address，所以會branch回到call svc的下一句指令
-6. 結束write
+5. SVC_Handler()
+6. 將user state堆入process stack中
+7. 從main stack中取出kernel state
+8. branch到lr，此處的lr是call activate進入activate後存的function return address，所以會branch回到call activate的下一句指令
+9. kernel中處理syscall經過迴圈後call activate
+10. activate()
+11. 將kernel state存入main stack
+12. 將r0寫進psp，並切換至process stack(CONTROL)
+13. 從process stack中將user state取出
+14. branch到lr，此處的lr是call svc進入svc_handler後存的function return address，所以會branch回到call svc的下一句指令
+15. 結束write
 
 下圖是以`sbrk`為範例呼叫
 ![System call sbrk](https://farm8.staticflickr.com/7101/13734597853_f0a70eb985_o.jpg)
