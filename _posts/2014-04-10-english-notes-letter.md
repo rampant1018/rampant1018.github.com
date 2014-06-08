@@ -2,7 +2,7 @@
 layout: post
 title: "English Notes: Letter"
 description: ""
-category: Learing
+category: Learning
 tags: [English]
 ---
 {% include JB/setup %}
