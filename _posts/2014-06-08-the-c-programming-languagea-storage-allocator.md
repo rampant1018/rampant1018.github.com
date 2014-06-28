@@ -57,7 +57,7 @@ malloc 與 free 則是用來配置/釋放動態記憶體，詳細的說明可以
 
 下面是一個處理對齊的範例標頭(Header)：
 
-~~~ c
+{% highlight c linenos %}
     typedef long Align;         /* for alignment to long boundary */
     
     union header {                /* block header */
@@ -69,7 +69,7 @@ malloc 與 free 則是用來配置/釋放動態記憶體，詳細的說明可以
     };
     
     typedef union header Header;
-~~~
+{% endhighlight %}
 
 `Align`可以用來處理上面提到的對齊問題，透過 union 可以將標頭調整到最適當的大小，這邊是使用`long`這個型態，除此之外，為了簡化對齊問題，所有區塊大小都是標頭大小的整數倍。
 
@@ -77,7 +77,7 @@ malloc 與 free 則是用來配置/釋放動態記憶體，詳細的說明可以
 
 ![malloc return](https://farm6.staticflickr.com/5158/14187927647_f355304002.jpg)
 
----
+{% highlight c linenos %}
     static Header base;    /* empty list to get started */
     static Header *freep = NULL;    /* start of free list */
     /* malloc: general-purpose storage allocator */
@@ -107,6 +107,7 @@ malloc 與 free 則是用來配置/釋放動態記憶體，詳細的說明可以
                                     return NULL;    /* none left */
             }
     }
+{% endhighlight %}
 
 * Line 8 : Round up to proper size
 * Line 9~12 : 若freep為NULL，代表還未執行過malloc，先進行初始化
@@ -119,7 +120,6 @@ malloc 與 free 則是用來配置/釋放動態記憶體，詳細的說明可以
 * Line 26~27 : 向系統要記憶體，若是失敗則回傳NULL
 * morecore(nunits)是向OS要求記憶體，會將新配置的記憶體插進free list，並回傳freep
 
----
 ### Implement on rtenv ###
 
 因為目前 rtenv 還未有記憶體管理，因此直接在 kernel 中宣告一塊足夠大的 heap 空間，sbrk 會直接從這段空間中配置記憶體給使用者。實作的程式碼放在[GitHub](https://github.com/rampant1018/rtenv-1/commit/2cb4c582af8461f93ab0269097d7f30785cb92f4)。

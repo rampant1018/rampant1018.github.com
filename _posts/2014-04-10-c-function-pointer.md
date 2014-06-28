@@ -11,14 +11,17 @@ Function pointer就是一個指向某函式位置的變數，透過函式指標�
 
 假設我的list函式庫中有一個foreach函式，參數是一個函式，他的參數是一份資料
 
+{% highlight c linenos %}
     void list_foreach(void (*operation)(void *)) {
         foreach(list) {
             operation(list->iterator);
         }
     }
+{% endhighlight %}
 
 接著我在使用這個函式庫時，只要使用我自己的function代入函式，就能在foreach中執行我要的方法
 
+{% highlight c linenos %}
     void my_func(void *data) {
         process(data);
     }
@@ -26,6 +29,7 @@ Function pointer就是一個指向某函式位置的變數，透過函式指標�
     void main() {
         list_foreach(my_func);
     }
+{% endhighlight %}
 
 這樣函式庫中就不需要在定義一個`list_foreach_my_func()`的函式
 
