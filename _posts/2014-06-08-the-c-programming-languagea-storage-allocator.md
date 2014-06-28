@@ -58,17 +58,17 @@ malloc 與 free 則是用來配置/釋放動態記憶體，詳細的說明可以
 下面是一個處理對齊的範例標頭(Header)：
 
 {% highlight c linenos %}
-    typedef long Align;         /* for alignment to long boundary */
-    
-    union header {                /* block header */
-            struct {
-                    union header *ptr;  /* next block if on free list */
-                    unsigned size;          /* size of this block */
-            } s;
-            Align x;   /* force alignment of blocks */
-    };
-    
-    typedef union header Header;
+typedef long Align;         /* for alignment to long boundary */
+
+union header {                /* block header */
+    struct {
+	    union header *ptr;  /* next block if on free list */
+	    unsigned size;          /* size of this block */
+    } s;
+    Align x;   /* force alignment of blocks */
+};
+
+typedef union header Header;
 {% endhighlight %}
 
 `Align`可以用來處理上面提到的對齊問題，透過 union 可以將標頭調整到最適當的大小，這邊是使用`long`這個型態，除此之外，為了簡化對齊問題，所有區塊大小都是標頭大小的整數倍。
@@ -78,35 +78,35 @@ malloc 與 free 則是用來配置/釋放動態記憶體，詳細的說明可以
 ![malloc return](https://farm6.staticflickr.com/5158/14187927647_f355304002.jpg)
 
 {% highlight c linenos %}
-    static Header base;    /* empty list to get started */
-    static Header *freep = NULL;    /* start of free list */
-    /* malloc: general-purpose storage allocator */
-    void *malloc(unsigned nbytes) {
-            Header *p, *prevp;
-            Header *morecore(unsigned);
-            unsigned nunits;
-            nunits = (nbytes+sizeof(Header)-1)/sizeof(header) + 1;
-            if ((prevp = freep) == NULL) {    /* no free list yet */
-                    base.s.ptr = freep = prevp = &base;
-                    base.s.size = 0;
-            }
-            for (p = prevp->s.ptr; ; prevp = p, p = p->s.ptr) {
-                    if (p->s.size >= nunits) { /* big enough */
-                            if (p->s.size == nunits) /* exactly */
-                                    prevp->s.ptr = p->s.ptr;
-                            else {    /* allocate tail end */
-                                    p->s.size -= nunits;
-                                    p += p->s.size;
-                                    p->s.size = nunits;
-                            }
-                            freep = prevp;
-                            return (void *)(p+1);
-                    }
-                    if (p == freep) /* wrapped around free list */
-                            if ((p = morecore(nunits)) == NULL)
-                                    return NULL;    /* none left */
-            }
+static Header base;    /* empty list to get started */
+static Header *freep = NULL;    /* start of free list */
+/* malloc: general-purpose storage allocator */
+void *malloc(unsigned nbytes) {
+    Header *p, *prevp;
+    Header *morecore(unsigned);
+    unsigned nunits;
+    nunits = (nbytes+sizeof(Header)-1)/sizeof(header) + 1;
+    if ((prevp = freep) == NULL) {    /* no free list yet */
+	    base.s.ptr = freep = prevp = &base;
+	    base.s.size = 0;
     }
+    for (p = prevp->s.ptr; ; prevp = p, p = p->s.ptr) {
+	    if (p->s.size >= nunits) { /* big enough */
+		    if (p->s.size == nunits) /* exactly */
+			    prevp->s.ptr = p->s.ptr;
+		    else {    /* allocate tail end */
+			    p->s.size -= nunits;
+			    p += p->s.size;
+			    p->s.size = nunits;
+		    }
+		    freep = prevp;
+		    return (void *)(p+1);
+	    }
+	    if (p == freep) /* wrapped around free list */
+		    if ((p = morecore(nunits)) == NULL)
+			    return NULL;    /* none left */
+    }
+}
 {% endhighlight %}
 
 * Line 8 : Round up to proper size
